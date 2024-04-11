@@ -32,6 +32,9 @@ The key fingerprint is:
 Your private key passphrase is:
 tgLar76rti7QLCi6ZD5eWrSWkw3iqIRgcpJG12SeWJn6
 
+The passphrase consists of 44 symbols, with 26 unique symbols. 
+It has an entropy of approximately 199 bits, or 4.53 bits per symbol.
+
 To save your private key with filename ./id_ed25519_2024-04-12_42c76e6b,
 run the following command to create a file in the current directory:
 

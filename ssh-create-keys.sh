@@ -21,6 +21,32 @@ clean_temp_dir() {
     exit 0
 }
 
+# Calling the function to calculate Shannon entropy for the passphrase and displaying the result
+calculate_entropy() {
+    local input=$1
+    local length=${#input}
+    declare -A frequency
+
+    # Calculating the frequency of characters
+    for (( i=0; i<length; i++ )); do
+        char="${input:$i:1}"
+        (( frequency[$char]++ ))
+    done
+
+    # Calculating entropy
+    entropy=0
+    for char in "${!frequency[@]}"; do
+        probability=$(bc -l <<< "scale=10; ${frequency[$char]} / $length")
+        entropy=$(bc -l <<< "$entropy - ($probability * l($probability)/l(2))")
+    done
+
+    # Displaying the result
+    totalEntropy=$(bc -l <<< "$entropy * $length")
+    echo "The passphrase consists of $length symbols, with ${#frequency[@]} unique symbols. "
+    echo "It has an entropy of approximately $(printf "%.0f" $totalEntropy) bits, or $(printf "%.2f" $entropy) bits per symbol. "
+
+}
+
 # Default variable initialization
 current_date=$(date -I)
 algorithm="ed25519"
@@ -68,6 +94,10 @@ echo
 # Displaying the passphrase
 echo "Your private key passphrase is:"
 echo "$base64Password"
+echo
+
+# Calling the function to calculate and displaying entropy
+calculate_entropy "$base64Password"
 echo
 
 # Displaying the private key
