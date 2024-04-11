@@ -18,7 +18,7 @@ done
 # Function to clean up the temporary directory
 clean_temp_dir() {
     rm -rf "$temp_dir"
-    exit 1
+    exit 0
 }
 
 # Default variable initialization
