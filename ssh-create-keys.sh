@@ -5,7 +5,7 @@
 #
 
 # Required tools list
-required_tools=(date openssl ssh-keygen sed awk cut xxd)
+required_tools=(date openssl ssh-keygen awk cut xxd)
 
 # Checking the availability of tools
 for tool in "${required_tools[@]}"; do
@@ -42,7 +42,7 @@ echo "Generating passphrase and public/private $algorithm key pair..."
 echo
 
 # Generating the passphrase for the private key
-base64Password=$(openssl rand -base64 32 | sed 's/.$//')
+base64Password=$(openssl rand -base64 33)
 
 # Creating SSH key pair
 # echo "Generating public/private $algorithm key pair..."
