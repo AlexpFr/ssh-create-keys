@@ -48,7 +48,7 @@ calculate_entropy() {
 }
 
 # Default variable initialization
-current_date=$(date -I)
+current_date=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 algorithm="ed25519"
 comment="$current_date" 
 
@@ -83,7 +83,7 @@ hexFingerprint=$(echo "$base64Fingerprint=" | base64 -d | xxd -p -c 32)
 shortFingerprint=$(echo "$hexFingerprint" | cut -c 1-8)
 
 # Creating output file names
-outPrivateKeyFileName=$(echo "$privateKeyFileName"_"$current_date"_"$shortFingerprint")
+outPrivateKeyFileName=$(echo "$privateKeyFileName"_$(echo "$current_date" | sed 's/:/-/g')_"$shortFingerprint")
 outPublicKeyFileName="$outPrivateKeyFileName.pub"
 
 # Displaying the SHA-256 fingerprint of the key
