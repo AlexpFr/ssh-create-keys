@@ -66,6 +66,16 @@ print_terminal()
     echo "> ./$outPublicKeyFileName"
 }
 
+# Save keys in current folder
+create_files()
+{
+    current_directory="$PWD"
+    echo "$_arg_passphrase" > "$current_directory/$outPrivateKeyFileName.secret"
+    cp "$temp_dir/$privateKeyFileName" "$current_directory/$outPrivateKeyFileName"
+    cp "$temp_dir/$publicKeyFileName" "$current_directory/$outPublicKeyFileName"
+    echo "3 files created in $PWD"
+}
+
 # Default variable initialization
 current_date=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 algorithm="ed25519"
@@ -120,4 +130,5 @@ calculate_entropy "$_arg_passphrase"
 echo
 
 print_terminal
+create_files
 
