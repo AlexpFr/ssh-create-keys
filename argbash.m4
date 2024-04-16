@@ -3,7 +3,7 @@
 # ARGBASH_SET_DELIM([ ])
 # ARG_RESTRICT_VALUES([no-any-options])
 #
-# ARG_OPTIONAL_BOOLEAN([verbose],[v],[Verbose mode])
+# ARG_OPTIONAL_INCREMENTAL([verbose], [v], [Verbose mode, you can repeat this 3 times (0 by default)], [0])
 # ARG_OPTIONAL_BOOLEAN([create-files],[f],[Create files in current folder])
 # ARG_OPTIONAL_BOOLEAN([print],[p],[print private-public key on terminial])
 #

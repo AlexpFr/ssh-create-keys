@@ -44,7 +44,7 @@ begins_with_short_option()
 
 # THE DEFAULTS INITIALIZATION - OPTIONALS
 version="devel"
-_arg_verbose="off"
+_arg_verbose=0
 _arg_create_files="off"
 _arg_print="off"
 _arg_comment=
@@ -54,8 +54,8 @@ _arg_rounds="16"
 print_help()
 {
     printf '%s\n' "Passphrase and public/private ed25519 key pair generator."
-    printf 'Usage: %s [-v|--(no-)verbose] [-f|--(no-)create-files] [-p|--(no-)print] [-C|--comment <string>] [-P|--passphrase <string>] [-a|--rounds <integer>] [-V|--version] [-h|--help]\n' "$0"
-    printf '\t%s\n' "-v, --verbose, --no-verbose: Verbose mode (off by default)"
+    printf 'Usage: %s [-v|--verbose] [-f|--(no-)create-files] [-p|--(no-)print] [-C|--comment <string>] [-P|--passphrase <string>] [-a|--rounds <integer>] [-V|--version] [-h|--help]\n' "$0"
+    printf '\t%s\n' "-v, --verbose: Verbose mode, you can repeat this 3 times (0 by default)"
     printf '\t%s\n' "-f, --create-files, --no-create-files: Create files in current folder (off by default)"
     printf '\t%s\n' "-p, --print, --no-print: print private-public key on terminial (off by default)"
     printf '\t%s\n' "-C, --comment: custom comment (default: 'AAAA-MM-JJTHH:MM:SSZ')"
@@ -71,12 +71,11 @@ parse_commandline()
     do
         _key="$1"
         case "$_key" in
-            -v|--no-verbose|--verbose)
-                _arg_verbose="on"
-                test "${1:0:5}" = "--no-" && _arg_verbose="off"
+            -v|--verbose)
+                _arg_verbose=$((_arg_verbose + 1))
                 ;;
             -v*)
-                _arg_verbose="on"
+                _arg_verbose=$((_arg_verbose + 1))
                 _next="${_key##-v}"
                 if test -n "$_next" -a "$_next" != "$_key"
                 then
@@ -197,7 +196,7 @@ calculate_entropy() {
 print_terminal()
 {
     # Displaying the private key
-    if [ "$_arg_verbose" = "on" ]; then
+    if [ "$_arg_verbose" -gt 0 ]; then
         printf '%s\n' "To save your private key with filename ./$outPrivateKeyFileName,"
         printf '%s\n\n' "run the following command to create a file in the current directory:"
     fi
@@ -205,7 +204,7 @@ print_terminal()
     printf '%s\n\n\n' "> ./$outPrivateKeyFileName"
 
     # Displaying the public key
-    if [ "$_arg_verbose" = "on" ]; then
+    if [ "$_arg_verbose" -gt 0 ]; then
         printf '%s\n' "To save your public key with filename ./$outPublicKeyFileName",
         printf '%s\n\n' "run the following command to create a file in the current directory:"
     fi
@@ -220,7 +219,7 @@ create_files()
     echo -n "$_arg_passphrase" > "$current_directory/$outPrivateKeyFileName.secret"
     cp "$temp_dir/$privateKeyFileName" "$current_directory/$outPrivateKeyFileName"
     cp "$temp_dir/$publicKeyFileName" "$current_directory/$outPublicKeyFileName"
-    [ "$_arg_verbose" = "on" ] && printf '%s\n' "3 files created in $PWD"
+    [ "$_arg_verbose" -gt 0 ] && printf '%s\n' "3 files created in $PWD"
 }
 
 # Parse command line options
@@ -249,7 +248,7 @@ chmod 700 $temp_dir
 privateKeyFileName="id_$algorithm"
 publicKeyFileName="$privateKeyFileName.pub"
 
-[ "$_arg_verbose" = "on" ] && printf '%s\n\n' "Generating passphrase and public/private $algorithm key pair..."
+[ "$_arg_verbose" -gt 0 ] && printf '%s\n\n' "Generating passphrase and public/private $algorithm key pair..."
 
 # If passphrase is not set, generate the passphrase for the private key
 if [ -z "$_arg_passphrase" ]; then
@@ -273,14 +272,14 @@ outPrivateKeyFileName=$(echo "$privateKeyFileName"_$(echo "$current_date" | sed 
 outPublicKeyFileName="$outPrivateKeyFileName.pub"
 
 # Displaying the SHA-256 fingerprint of the key
-[ "$_arg_verbose" = "on" ] && printf "The key fingerprint is:\n%s\n" "$fullFingerprint"
+[ "$_arg_verbose" -gt 0 ] && printf "The key fingerprint is:\n%s\n" "$fullFingerprint"
 
 # Displaying the passphrase
-[ "$_arg_verbose" = "on" ] && printf '\n%s\n' "Your private key passphrase, encoded with $_arg_rounds KDF rounds, is:" 
+[ "$_arg_verbose" -gt 0 ] && printf '\n%s\n' "Your private key passphrase, encoded with $_arg_rounds KDF rounds, is:" 
 printf '%s\n\n' "$_arg_passphrase"
 
 # Calling the function to calculate and displaying entropy
-[ "$_arg_verbose" = "on" ] && calculate_entropy "$_arg_passphrase"
+[ "$_arg_verbose" -gt 0 ] && calculate_entropy "$_arg_passphrase"
 
 [ "$_arg_print" = "on" ] && print_terminal
 
