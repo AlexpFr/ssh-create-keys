@@ -279,10 +279,6 @@ printf '%s\n\n' "$_arg_passphrase"
 # Calling the function to calculate and displaying entropy
 calculate_entropy "$_arg_passphrase"
 
-if [ "$_arg_print" = "on" ]; then
-    print_terminal
-fi
+[ "$_arg_print" = "on" ] && print_terminal
 
-if [ "$_arg_create_files" = "on" ]; then
-    create_files
-fi
+[ "$_arg_create_files" = "on" ] && create_files
