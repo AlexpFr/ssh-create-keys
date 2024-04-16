@@ -15,6 +15,7 @@ Make sure you have the required tools installed:
 - `awk`
 - `cut`
 - `xxd`
+- `sed`
 
 If necessary, modify the script to change the public key comment variable to `comment="Your comment here"`.  
 Run `chmod 755 ssh-create-keys.sh` to make the script executable.  

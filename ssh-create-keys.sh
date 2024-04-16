@@ -5,7 +5,7 @@
 #
 
 # Required tools list
-required_tools=(date openssl ssh-keygen awk cut xxd)
+required_tools=(date openssl ssh-keygen awk cut xxd sed)
 
 # Checking the availability of tools
 for tool in "${required_tools[@]}"; do
