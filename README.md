@@ -17,9 +17,21 @@ Make sure you have the required tools installed:
 - `xxd`
 - `sed`
 
-If necessary, modify the script to change the public key comment variable to `comment="Your comment here"`.  
 Run `chmod 755 ssh-create-keys.sh` to make the script executable.  
-Execute `./ssh-create-keys.sh` in your terminal to run it.
+
+```
+~/ssh-create-keys$ ./ssh-create-keys.sh --help
+Passphrase and public/private ed25519 key pair generator.
+Usage: ./ssh-create-keys.sh [-v|--(no-)verbose] [-f|--(no-)create-files] [-p|--(no-)print] [-C|--comment <string>] [-P|--passphrase <string>] [-a|--rounds <integer>] [-V|--version] [-h|--help]
+        -v, --verbose, --no-verbose: Verbose mode (off by default)
+        -f, --create-files, --no-create-files: Create files in current folder (off by default)
+        -p, --print, --no-print: print private-public key on terminial (off by default)
+        -C, --comment: custom comment (default: 'AAAA-MM-JJTHH:MM:SSZ')
+        -P, --passphrase: custom passphrase (no default)
+        -a, --rounds: KDF rounds (default: '16')
+        -V, --version: Prints version
+        -h, --help: Prints help
+```
 
 ## Example Output
 
