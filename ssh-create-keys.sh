@@ -195,21 +195,23 @@ calculate_entropy() {
 # Print keys in the terminal
 print_terminal()
 {
-    # Displaying the private key
-    if [ "$_arg_verbose" -gt 0 ]; then
-        printf '%s\n' "To save your private key with filename ./$outPrivateKeyFileName,"
-        printf '%s\n\n' "run the following command to create a file in the current directory:"
+    # Displaying the private/public keys
+    if [ "$_arg_verbose" -eq 0 ]; then
+        printf '%s\n\n\n' "$(cat "$temp_dir/$privateKeyFileName")"
+        printf '%s\n' "$(cat "$temp_dir/$publicKeyFileName")"
     fi
-    printf '%s\n' "echo \"$(cat "$temp_dir/$privateKeyFileName")\"\\"
-    printf '%s\n\n\n' "> ./$outPrivateKeyFileName"
 
-    # Displaying the public key
-    if [ "$_arg_verbose" -gt 0 ]; then
-        printf '%s\n' "To save your public key with filename ./$outPublicKeyFileName",
+    if [ "$_arg_verbose" -gt 1 ]; then
+        printf '%s\n' "To save your private/public keys with filenames ./$outPrivateKeyFileName and ./$outPublicKeyFileName,"
         printf '%s\n\n' "run the following command to create a file in the current directory:"
     fi
-    printf '%s\n' "echo \"$(cat "$temp_dir/$publicKeyFileName")\"\\"
-    printf '%s\n' "> ./$outPublicKeyFileName"
+
+    if [ "$_arg_verbose" -gt 0 ]; then
+        printf '%s\n' "echo \"$(cat "$temp_dir/$privateKeyFileName")\"\\"
+        printf '%s\n\n\n' "> ./$outPrivateKeyFileName"
+        printf '%s\n' "echo \"$(cat "$temp_dir/$publicKeyFileName")\"\\"
+        printf '%s\n' "> ./$outPublicKeyFileName"
+    fi
 }
 
 # Save keys in current folder
@@ -219,7 +221,7 @@ create_files()
     echo -n "$_arg_passphrase" > "$current_directory/$outPrivateKeyFileName.secret"
     cp "$temp_dir/$privateKeyFileName" "$current_directory/$outPrivateKeyFileName"
     cp "$temp_dir/$publicKeyFileName" "$current_directory/$outPublicKeyFileName"
-    [ "$_arg_verbose" -gt 0 ] && printf '%s\n' "3 files created in $PWD"
+    [ "$_arg_verbose" -gt 0 ] && printf '\n%s\n' "3 files created in $PWD"
 }
 
 # Parse command line options
@@ -248,7 +250,7 @@ chmod 700 $temp_dir
 privateKeyFileName="id_$algorithm"
 publicKeyFileName="$privateKeyFileName.pub"
 
-[ "$_arg_verbose" -gt 0 ] && printf '%s\n\n' "Generating passphrase and public/private $algorithm key pair..."
+[ "$_arg_verbose" -gt 1 ] && printf '%s\n\n' "Generating passphrase and public/private $algorithm key pair..."
 
 # If passphrase is not set, generate the passphrase for the private key
 if [ -z "$_arg_passphrase" ]; then
@@ -272,14 +274,14 @@ outPrivateKeyFileName=$(echo "$privateKeyFileName"_$(echo "$current_date" | sed 
 outPublicKeyFileName="$outPrivateKeyFileName.pub"
 
 # Displaying the SHA-256 fingerprint of the key
-[ "$_arg_verbose" -gt 0 ] && printf "The key fingerprint is:\n%s\n" "$fullFingerprint"
+[ "$_arg_verbose" -gt 1 ] && printf "The key fingerprint is:\n%s\n" "$fullFingerprint"
 
 # Displaying the passphrase
-[ "$_arg_verbose" -gt 0 ] && printf '\n%s\n' "Your private key passphrase, encoded with $_arg_rounds KDF rounds, is:" 
+[ "$_arg_verbose" -gt 1 ] && printf '\n%s\n' "Your private key passphrase, encoded with $_arg_rounds KDF rounds, is:" 
 printf '%s\n\n' "$_arg_passphrase"
 
 # Calling the function to calculate and displaying entropy
-[ "$_arg_verbose" -gt 0 ] && calculate_entropy "$_arg_passphrase"
+[ "$_arg_verbose" -gt 1 ] && calculate_entropy "$_arg_passphrase"
 
 [ "$_arg_print" = "on" ] && print_terminal
 
