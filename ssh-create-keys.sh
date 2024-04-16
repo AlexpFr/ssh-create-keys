@@ -47,6 +47,25 @@ calculate_entropy() {
 
 }
 
+# Print keys in the terminal
+print_terminal()
+{
+    # Displaying the private key
+    echo "To save your private key with filename ./$outPrivateKeyFileName,"
+    echo "run the following command to create a file in the current directory:"
+    echo
+    echo "echo \"$(cat "$temp_dir/$privateKeyFileName")\"\\"
+    echo "> ./$outPrivateKeyFileName"
+    echo
+    echo
+    # Displaying the public key
+    echo "To save your public key with filename ./$outPublicKeyFileName",
+    echo "run the following command to create a file in the current directory:"
+    echo
+    echo "echo \"$(cat "$temp_dir/$publicKeyFileName")\"\\"
+    echo "> ./$outPublicKeyFileName"
+}
+
 # Default variable initialization
 current_date=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 algorithm="ed25519"
@@ -100,17 +119,5 @@ echo
 calculate_entropy "$_arg_passphrase"
 echo
 
-# Displaying the private key
-echo "To save your private key with filename ./$outPrivateKeyFileName,"
-echo "run the following command to create a file in the current directory:"
-echo
-echo "echo \"$(cat "$temp_dir/$privateKeyFileName")\"\\"
-echo "> ./$outPrivateKeyFileName"
-echo
-echo
-# Displaying the public key
-echo "To save your public key with filename ./$outPublicKeyFileName",
-echo "run the following command to create a file in the current directory:"
-echo
-echo "echo \"$(cat "$temp_dir/$publicKeyFileName")\"\\"
-echo "> ./$outPublicKeyFileName"
+print_terminal
+
