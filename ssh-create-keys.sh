@@ -216,7 +216,7 @@ print_terminal()
 create_files()
 {
     current_directory="$PWD"
-    echo "$_arg_passphrase" > "$current_directory/$outPrivateKeyFileName.secret"
+    echo -n "$_arg_passphrase" > "$current_directory/$outPrivateKeyFileName.secret"
     cp "$temp_dir/$privateKeyFileName" "$current_directory/$outPrivateKeyFileName"
     cp "$temp_dir/$publicKeyFileName" "$current_directory/$outPublicKeyFileName"
     echo "3 files created in $PWD"
