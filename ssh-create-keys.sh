@@ -50,7 +50,7 @@ calculate_entropy() {
 # Default variable initialization
 current_date=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 algorithm="ed25519"
-comment="$current_date" 
+_arg_comment="$current_date"
 
 # Create a temporary directory
 temp_dir=$(mktemp -d)
@@ -68,11 +68,11 @@ echo "Generating passphrase and public/private $algorithm key pair..."
 echo
 
 # Generating the passphrase for the private key
-base64Password=$(openssl rand -base64 33)
+_arg_passphrase=$(openssl rand -base64 33)
 
 # Creating SSH key pair
 # echo "Generating public/private $algorithm key pair..."
-ssh-keygen -q -t "$algorithm" -f "$temp_dir/$privateKeyFileName" -N "$base64Password" -C "$comment"
+ssh-keygen -q -t "$algorithm" -f "$temp_dir/$privateKeyFileName" -N "$_arg_passphrase" -C "$_arg_comment"
 
 # Extracting the fingerprint
 fullFingerprint=$(ssh-keygen -lf "$temp_dir/$privateKeyFileName" -E sha256)
@@ -93,11 +93,11 @@ echo
 
 # Displaying the passphrase
 echo "Your private key passphrase is:"
-echo "$base64Password"
+echo "$_arg_passphrase"
 echo
 
 # Calling the function to calculate and displaying entropy
-calculate_entropy "$base64Password"
+calculate_entropy "$_arg_passphrase"
 echo
 
 # Displaying the private key
