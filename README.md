@@ -36,7 +36,7 @@ Usage: ./ssh-create-keys.sh [-v|--(no-)verbose] [-f|--(no-)create-files] [-p|--(
 ## Example Output
 
 ```
-~/ssh-create-keys$ ./ssh-create-keys.sh 
+~/ssh-create-keys$ ./ssh-create-keys.sh -pv
 Generating passphrase and public/private ed25519 key pair...
 
 The key fingerprint is:
